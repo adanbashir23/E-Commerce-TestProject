@@ -108,7 +108,7 @@ class UserProfileForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.form_id = 'user-profile-form'
         self.helper.form_method = 'post'
-        self.helper.form_action = reverse('account_profile')
+        self.helper.form_action = reverse('user_profile')
         self.helper.add_input(
             Submit('submit', 'Update', css_class='btn btn-success'))
         self.helper.layout = Layout(

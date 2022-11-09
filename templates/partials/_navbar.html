@@ -1,20 +1,32 @@
-NAVBAR
 {% load static %}
-<header class="d-none d-md-block">
-    <div id="top-header">
-        <div class="container">
-            <ul class="header-links">
-                <li><i class="fas fa-envelope"></i> help@ecommerce-app.demo</li>
-                <li><i class="fas fa-truck"></i> Free Shipping for all orders during the demonstration period!</li>
-                <li>
-                    {% if request.user.is_authenticated %}
-                    <i class="fa fa-user pr-1"></i> {{ user.full_name|title }}
-
-                    {% else %}
-                    <a class="header-login" href="{% url 'account_login' %}"><i class="fa fa-user"></i> Login</a>
-                    {% endif %}
-                </li>
-            </ul>
+<nav class="navbar navbar-light bg-light d-flex">
+    <div class="container">
+        <div class="logo">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-envelope"></i>
+                help@ecommerce-app.demo
+                <i class="fas fa-truck"></i>
+                Free Shipping for all orders during the demonstration period!
+            </a>
         </div>
-    </div>
-</header>
+        <div class="m-auto"></div>
+        <div class="user-section">
+            <a href="{% url 'home' %}">
+                <i class="fa fa-home"></i>
+            </a>
+            {% if request.user.is_authenticated %}
+            <a href="{% url 'user_profile' %}">
+                <i class="fa fa-user pr-1"></i>{{ user.full_name|title }}
+            </a>
+            {% else %}
+            <a class="header-login" href="{% url 'account_login' %}">
+                <i class="fa fa-user"></i> Login
+            </a>
+            {% endif %}
+        </a>
+        <a href="{% url 'account_logout' %}" data-method="delete">
+            <i class="fa fa-sign-out">SIGN OUT</i>
+        </a>
+    </nav>
+</div>
+</body>
