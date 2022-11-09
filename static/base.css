@@ -1,0 +1,75 @@
+body {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 14px;
+}
+
+a {
+  text-decoration: none;
+  transition: 0.2s all;
+}
+
+a:hover,
+a:focus {
+  text-decoration: none;
+  outline: none;
+}
+
+ul,
+ol {
+  margin: 0;
+  padding: 0;
+  list-style: none
+}
+
+nav {
+  margin-bottom: 30px;
+}
+
+/* this keeps the footer at the bottom of the page if there is not enough content */
+main {
+  /* minus HEADER minus NAVBAR minus FOOTER */
+  min-height: calc(100vh - 47px - 56px - 319px);
+}
+
+#top-header {
+  position: relative;
+  background-color: #0092D6;
+  padding: 4px 30px;
+  color: #ffffff;
+  vertical-align: middle;
+}
+
+#top-header .header-login {
+  color: white;
+  height: 30px;
+  background: rgba(0, 146, 214, 0.384);
+  display: inline-flex;
+  padding: 0 15px;
+  align-items: center;
+  font-size: 12px;
+  font-weight: 700;
+  transition: 0.2s all;
+}
+
+#top-header a:hover {
+  background: rgba(0, 146, 214, 1);
+
+}
+
+.header-links {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+}
+
+.header-links i {
+  margin-right: 5px;
+}
+
+#top-header ul.header-links ul.dropdown-menu {
+  color: #000000;
+  position: relative;
+  z-index: 10000;
+  margin-right: 30px;
+}

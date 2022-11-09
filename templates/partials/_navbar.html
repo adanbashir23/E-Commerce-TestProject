@@ -1,0 +1,20 @@
+NAVBAR
+{% load static %}
+<header class="d-none d-md-block">
+    <div id="top-header">
+        <div class="container">
+            <ul class="header-links">
+                <li><i class="fas fa-envelope"></i> help@ecommerce-app.demo</li>
+                <li><i class="fas fa-truck"></i> Free Shipping for all orders during the demonstration period!</li>
+                <li>
+                    {% if request.user.is_authenticated %}
+                    <i class="fa fa-user pr-1"></i> {{ user.full_name|title }}
+
+                    {% else %}
+                    <a class="header-login" href="{% url 'account_login' %}"><i class="fa fa-user"></i> Login</a>
+                    {% endif %}
+                </li>
+            </ul>
+        </div>
+    </div>
+</header>
