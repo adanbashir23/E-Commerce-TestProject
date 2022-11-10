@@ -1,32 +1,38 @@
 {% load static %}
-<nav class="navbar navbar-light bg-light d-flex">
-    <div class="container">
-        <div class="logo">
-            <a class="navbar-brand" href="#">
-                <i class="fas fa-envelope"></i>
-                help@ecommerce-app.demo
-                <i class="fas fa-truck"></i>
-                Free Shipping for all orders during the demonstration period!
-            </a>
-        </div>
-        <div class="m-auto"></div>
-        <div class="user-section">
-            <a href="{% url 'home' %}">
-                <i class="fa fa-home"></i>
-            </a>
-            {% if request.user.is_authenticated %}
-            <a href="{% url 'user_profile' %}">
-                <i class="fa fa-user pr-1"></i>{{ user.full_name|title }}
-            </a>
-            {% else %}
-            <a class="header-login" href="{% url 'account_login' %}">
-                <i class="fa fa-user"></i> Login
-            </a>
-            {% endif %}
-        </a>
-        <a href="{% url 'account_logout' %}" data-method="delete">
-            <i class="fa fa-sign-out">SIGN OUT</i>
-        </a>
-    </nav>
-</div>
+<body>
+    <div>
+        <nav class="navbar navbar-light bg-light d-flex">
+            <div class="container">
+                <div class="logo">
+                    <a class="navbar-brand" href="#">
+                        <a href="{% url 'home'%}">
+                            <i class="fa fa-solid fa-store"></i>
+                        </a>
+                    </a>
+                </div>
+                <div class="m-auto">
+                    SEARCH BAR WILL COME HERE
+                </div>
+                <div class="user-section">
+                    <a href="{% url 'home' %}">
+                        <i class="fa fa-home"></i>
+                    </a>
+                    {% if request.user.is_authenticated %}
+                    <a href="{% url 'user_profile' %}">
+                        <i class="fa fa-user pr-1"></i>
+                        {{ user.full_name|title }}
+                    </a>
+                    {% else %}
+                    <a class="header-login" href="{% url 'account_login' %}">
+                        <i class="fa fa-user"></i>
+                        Login
+                    </a>
+                    {% endif %}
+                    <a href="{% url 'account_logout' %}" data-method="delete">
+                        <i class="fa fa-sign-out">SIGN OUT</i>
+                    </a>
+                </div>
+            </div>
+        </nav>
+    </div>
 </body>
