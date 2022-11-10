@@ -48,6 +48,7 @@ class UserProfileSignupForm(SignupForm):
     city = forms.CharField(max_length=50)
     country = forms.CharField(max_length=100)
     post_code = forms.CharField(max_length=30)
+    avatar = forms.ImageField()
 
     def save(self, request):
         """Save changes"""
@@ -58,6 +59,7 @@ class UserProfileSignupForm(SignupForm):
         user.city = self.cleaned_data["city"]
         user.country = self.cleaned_data["country"]
         user.post_code = self.cleaned_data["post_code"]
+        user.avatar = self.cleaned_data["avatar"]
         user.save()
         return user
 
@@ -73,6 +75,8 @@ class UserProfileSignupForm(SignupForm):
             Fieldset('Personal Details',
                      Div(
                          Div('full_name', css_class='col-12 col-sm-6 '
+                             'col-md-4'),
+                          Div('avatar', css_class='col-12 col-sm-6 '
                              'col-md-4'),
                          css_class='row')
                      ),
@@ -97,7 +101,7 @@ class UserProfileSignupForm(SignupForm):
 class UserProfileForm(forms.ModelForm):
     class Meta:
         model = get_user_model()
-        fields = ["email", "full_name", "address", "city", "country", "post_code"]
+        fields = ["email", "full_name", "address", "city", "country", "post_code", "avatar"]
 
     def __init__(self, *args, **kwargs):
         super(UserProfileForm, self).__init__(*args, **kwargs)

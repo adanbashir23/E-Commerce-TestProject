@@ -2,7 +2,6 @@
 from django.db import models
 from django.urls import reverse
 from django.contrib.auth.models import BaseUserManager, AbstractUser
-from cloudinary.models import CloudinaryField
 
 # Create your models here.
 
@@ -47,7 +46,7 @@ class UserProfile(AbstractUser):
     city = models.CharField(max_length=50, null=True)
     country = models.CharField(max_length=100, null=True)
     post_code = models.CharField(max_length=30, null=True)
-    avatar = models.ImageField(upload_to='images', default= 'images/avatar.jpeg')
+    avatar = models.ImageField(upload_to='images/', default= 'images/avatar.jpeg')
 
     USERNAME_FIELD = "email"
 

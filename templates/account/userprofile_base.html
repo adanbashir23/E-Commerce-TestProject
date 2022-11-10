@@ -5,6 +5,7 @@
 <h1>Profile</h1>
 <div class="row mb-3">
     <section id="profile-links col-12">
+        <img src="{{ userprofile.avatar.url }}" class="img-responsive" />
         <a href="{% url 'user_profile' %}"
             class="btn btn-sm btn-outline-dark {% if 'profile' in request.path %} active {% endif %}">Update
             Personal
