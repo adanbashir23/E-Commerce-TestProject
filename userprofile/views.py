@@ -1,8 +1,4 @@
 """UserProfile/Views"""
-from django.contrib.auth.forms import UserCreationForm
-from django.urls import reverse_lazy
-from django.views import generic
-
 from django.views.generic.edit import UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
@@ -12,7 +8,7 @@ from .forms import UserProfileForm
 class ProfileView(LoginRequiredMixin, UpdateView):
     """User profile modification view"""
     form_class =  UserProfileForm
-    template_name = 'userprofilepage.html'
+    template_name = 'account/userprofilepage.html'
 
     def get_object(self, queryset=None):
         """Override default object to return user object"""
@@ -30,6 +26,5 @@ class ProfileView(LoginRequiredMixin, UpdateView):
 
     def form_invalid(self, form):
         messages.error(
-            self.request, 'There was a problem with the data you inputted - '
-            'please see the error messages below.')
+            self.request, 'There was a problem with your profile. Please try again.')
         return super().form_invalid(form)

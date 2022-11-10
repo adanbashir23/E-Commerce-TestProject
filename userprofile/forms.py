@@ -1,15 +1,14 @@
 """User Forms"""
 
-from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
+from django import forms
 from django.urls import reverse
 
 from crispy_forms.bootstrap import Field
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit, Div, Fieldset, Layout
 from allauth.account.forms import LoginForm, SignupForm
-
 
 class UserProfileCreationForm(UserCreationForm):
     """Signing up form for a user"""
@@ -62,10 +61,8 @@ class UserProfileSignupForm(SignupForm):
         user.save()
         return user
 
-
     def __init__(self, *args, **kwargs):
         super(UserProfileSignupForm, self).__init__(*args, **kwargs)
-        # create form structure using crispy forms
         self.helper = FormHelper()
         self.helper.form_id = 'user-signup-form'
         self.helper.form_method = 'post'

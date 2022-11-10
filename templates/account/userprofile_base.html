@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-heyyyy
+
 {% block title %} | Update Profile{% endblock title %}
 {% block content %}
 <h1>Profile</h1>
@@ -16,14 +16,10 @@ heyyyy
             Password</a>
     </section>
 </div>
-
+{% block profile_content %}
+{% endblock profile_content %}
 
 {% block extra_body %}
 {% endblock extra_body %}
 
 {% endblock content %}
-{% load crispy_forms_tags %}
-
-{% block profile_content %}
-{% crispy form %}
-{% endblock profile_content %}

@@ -22,15 +22,15 @@
                         <i class="fa fa-user pr-1"></i>
                         {{ user.full_name|title }}
                     </a>
+                    <a href="{% url 'account_logout' %}" data-method="delete">
+                        <i class="fa fa-sign-out">SIGN OUT</i>
+                    </a>
                     {% else %}
                     <a class="header-login" href="{% url 'account_login' %}">
                         <i class="fa fa-user"></i>
                         Login
                     </a>
                     {% endif %}
-                    <a href="{% url 'account_logout' %}" data-method="delete">
-                        <i class="fa fa-sign-out">SIGN OUT</i>
-                    </a>
                 </div>
             </div>
         </nav>

@@ -3,7 +3,7 @@
 }
 .main {
     max-width: 1000px;
-    min-height: 30em;
+    min-height: 700px;
 }
 .navbar {
     border-bottom: 1px solid rgba(0, 0, 0, .0975);
@@ -34,78 +34,3 @@
 .footer p {
     color: #999;
 }
-.posts {
-    margin: 50px 180px 10px;
-}
-.posts .post {
-    border: 1px solid #efefef;
-    margin: 60px 0;
-    border-radius: 3px;
-}
-.posts .post .user {
-    border-bottom: 1px solid #efefef;
-    display: flex;
-}
-.posts .post .user .avatar {
-    width: 30px;
-    margin: 8px;
-}
-.posts .post .user .avatar img {
-    width: 100%;
-    border: 1px solid #efefef;
-    border-radius: 50%;
-}
-.posts .post .user .username {
-    padding-top: 13px;
-    color: #262626;
-    font-size: 14px;
-    font-weight: 600;
-}
-.posts .post .main-image {
-    width: 100%;
-    border-bottom: 1px solid #f4f4f4;
-}
-.posts .post .description {
-    padding: 20px;
-}
-
-
-.form-upload{
-    border: 1px solid #dbdbdb;
-    height: auto;
-    margin: auto 160px;
-    padding: 30px;
-    border-radius: 3px;
-    /* input[type='text']{ */
-      width: 100%;
-    /* } */
-  }
-
-  .myimg{
-    height: 500px;
-    width: 500px;
-  }
-
-  .logo-mini{
-    height: 40px;
-    width: 100px;
-  }
-
-  .table {
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-  .suggestions-img {
-    border-radius: 50%;
-    width: 80px;
-    height: 80px;
-  }
-
-  .suggestions {
-    display: flex;
-  }
-
-  .list-inline {
-    display: inline;
-  }
