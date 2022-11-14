@@ -1,6 +1,7 @@
 """Product model"""
 import uuid
 from django.db import models
+
 # from userprofile.models import UserProfile
 
 # Create your models here.
@@ -23,14 +24,24 @@ class Product(models.Model):
     stock = models.PositiveIntegerField(default=10)
     description = models.TextField()
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
-    image = models.FileField(blank=True)
+    images = models.FileField(blank=True)
 
     def get_absolute_url(self):
         """define default url for an instance of product model"""
         return reverse("product_detail", kwargs={"pk": str(self.serial_number)})
 
 
-class ProductImage(models.Model):
-    """image model"""
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    images = models.FileField(upload_to="images/")
+# class ProductImage(models.Model):
+#     """image model"""
+#     product = models.ForeignKey(Product, on_delete=models.CASCADE)
+#     images = models.FileField(upload_to="images/")
+
+
+class Comment(models.Model):
+    """Users can leave product reviews"""
+
+    comment = models.TextField()
+    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
+    product = models.ForeignKey(
+        Product, on_delete=models.CASCADE, related_name="comments"
+    )
