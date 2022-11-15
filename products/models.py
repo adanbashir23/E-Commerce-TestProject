@@ -1,13 +1,13 @@
+# pylint: disable=E1101
 """Product model"""
+
 import uuid
 from django.db import models
 
 # from userprofile.models import UserProfile
 
 # Create your models here.
-
 from django.urls import reverse
-
 from django.contrib.auth import get_user_model
 
 
@@ -30,15 +30,23 @@ class Product(models.Model):
         """define default url for an instance of product model"""
         return reverse("product_detail", kwargs={"pk": str(self.serial_number)})
 
+    # class ProductImage(models.Model):
+    #     """image model"""
+    #     product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    #     images = models.FileField(upload_to="images/")
 
-# class ProductImage(models.Model):
-#     """image model"""
-#     product = models.ForeignKey(Product, on_delete=models.CASCADE)
-#     images = models.FileField(upload_to="images/")
+    def comment_count(self):
+        """Return total reviews for product"""
+        count = self.comments.aggregate(count=models.Count("comment"))["count"]
+
+        if count is None:
+            count = 0
+
+        return count
 
 
 class Comment(models.Model):
-    """Users can leave product reviews"""
+    """Users can leave product comments"""
 
     comment = models.TextField()
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
