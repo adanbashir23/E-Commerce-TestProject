@@ -25,7 +25,9 @@ urlpatterns = [
     path('userprofiles/', include('userprofile.urls')),
     path('userprofiles/', include('allauth.urls')),
     path('products/', include('products.urls')),
-    path("", TemplateView.as_view(template_name="homepage.html"), name="home")
+    path('checkout/', include('checkout.urls')),
+    # path('cart/', include('cart.urls')),
+    path('', TemplateView.as_view(template_name='homepage.html'), name='home')
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
