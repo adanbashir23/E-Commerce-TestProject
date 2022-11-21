@@ -117,8 +117,8 @@ class ProductComment(FormView):
     model = Comment
 
     def post(self, request, *args, **kwargs):
-        # if not request.user.is_authenticated:
-        #     return HttpResponseForbidden()
+        if not request.user.is_authenticated:
+            return HttpResponseForbidden()
 
         form = self.form_class(request.POST)
 

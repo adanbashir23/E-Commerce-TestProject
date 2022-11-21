@@ -44,6 +44,16 @@ class Product(models.Model):
 
         return count
 
+    # def product_count(self):
+    #     count_p = self.objects.all().count()
+
+    #     # if count_p is None:
+    #     #     count_p= 0
+
+    #     print(count_p)
+
+    # return count_p
+
 
 class Comment(models.Model):
     """Users can leave product comments"""

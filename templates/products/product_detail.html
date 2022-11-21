@@ -2,55 +2,6 @@
 
 {% load crispy_forms_tags %}
 
-{% comment "Optional note" %}
-
-
-{% block title %} | {{ product.title }}{% endblock %}
-{% block content %}
-
-<div class="row">
-    <div class="col-md-6">
-        <div class="product-image">
-            <!-- {% for img in images %} -->
-            <!-- <img src="{{img.images.url}}" alt="Image"> -->
-            <!-- {% endfor %} -->
-            <img src="{{ product.images.url }}" alt="Product image">
-        </div>
-    </div>
-
-    <div class="col-md-6">
-        <div class="product-details">
-            <h2 class="product-title">{{ product.title }}</h2>
-
-            <span class="product-brand">{{ product.brand }}</span>
-
-            <h3 class="product-price">€{{ product.price }}</h3>
-            {% if product.stock > 0 %}
-            <span class="stock in-stock">Available</span>
-            {% else %}
-            <span class="stock out-of-stock">Out of Stock</span>
-            {% endif %}
-        </div>
-    </div>
-
-    <div class="col-12">
-        <div id="product-extras">
-            <h5>Description</h5>
-            <div class="tab-content" id="product-tabs-content">
-                <div class="tab-pane fade show active" id="description" role="tabpanel"
-                    aria-labelledby="description-tab">
-                    <p>{{ product.description }}</p>
-                    <a href="{%url 'product_edit' product.serial_number %}">Edit Product</a>
-                    <a href="{%url 'product_delete' product.serial_number %}">Delete Product</a>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-{% endblock %}
-
-{% endcomment %}
-
 {% block title %} | {{ product.product_name }}{% endblock %}
 {% block content %}
 
@@ -64,7 +15,6 @@
     <div class="col-md-6">
         <div class="product-details">
             <h2 class="product-title">{{ product.product_name }}</h2>
-            {#% include 'partials/_product_admin.html' %#}
             <span class="product-brand">{{ product.brand }}</span>
             <div class="product-rating">
                 <span class="product-comments"> {{ product.comment_count}} comments</span>
@@ -85,51 +35,58 @@
                <li class="active">
                     <a id="description-tab" data-toggle="tab" href="#description" role="tab" aria-controls="description"
                         aria-selected="true">Description</a>
+                        <p>{{ product.description }}</p>
+                        <a href="{%url 'product_edit' product.serial_number %}">Edit Product</a>
+                        <a href="{%url 'product_delete' product.serial_number %}">Delete Product</a>
                 </li>
                 <li>
                     <a id="comments-tab" data-toggle="tab" href="#comments" role="tab" aria-controls="comments"
                         aria-selected="false">Comments</a>
                 </li>
                 <li>
-                    <a id="add-comment-tab" data-toggle="tab" href="#add-comment" role="tab" aria-controls="add-comment"
+                    <a id="add-comment-tab" data-toggle="tab" href="" role="tab" aria-controls="add-comment"
                         aria-selected="false">Leave a Comment</a>
-                </li>
+                        <div class="tab-content" id="product-tabs-content">
+                            <!-- <div class="tab-pane fade show active" id="description" role="tabpanel"
+                                aria-labelledby="description-tab">
+                                <p>{{ product.description }}</p>
+                            </div> -->
+                            <div class="tab-pane fade" id="comments" role="tabpanel" aria-labelledby="comments-tab">
+                                <ul class="comments">
+                                    {% for comment in product.comments.all %}
+                                    <li>
+                                        <div class="comment-heading">
+
+                                            <h5 class="name">{{ comment.user.full_name }}</h5>
+                                        </div>
+                                        <div class="comment-body">
+                                            <p>{{ comment.comment }}</p>
+                                        </div>
+                                    </li>
+                                    {% empty %}
+                                    <li>This product does not yet have any comments. You can be the first!</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                            <div class="tab-pane fade" id="add-comment" role="tabpanel" aria-labelledby="add-comment-tab">
+                                {% if user.is_authenticated %}
+                                <p>yes is authenticated</p>
+                                {% if display_form is True %}
+                                {% crispy form %}
+                                {% else %}
+                                <p>You have already submitted a comment for this product.</p>
+                                {% endif %}
+                                {% else %}
+                                <p>You need to <a href="{% url 'account_signup' %}">Register</a> or <a
+                                        href="{% url 'account_login' %}">Login</a> to leave a comment. </p>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                </li>#
             </ul>
 
-            <div class="tab-content" id="product-tabs-content">
-                <div class="tab-pane fade show active" id="description" role="tabpanel"
-                    aria-labelledby="description-tab">
-                    <p>{{ product.description }}</p>
-                </div>
-                <div class="tab-pane fade" id="comments" role="tabpanel" aria-labelledby="comments-tab">
-                    <ul class="comments">
-                        {% for comment in product.comments.all %}
-                        <li>
-                            <div class="comment-heading">
-                                <h5 class="name">{{ comment.user.full_name }}</h5>
-                            </div>
-                            <div class="comment-body">
-                                <p>{{ comment.comment }}</p>
-                            </div>
-                        </li>
-                        {% empty %}
-                        <li>This product does not yet have any comments. You can be the first!</li>
-                        {% endfor %}
-                    </ul>
-                </div>
-                <div class="tab-pane fade" id="add-comment" role="tabpanel" aria-labelledby="add-comment-tab">
-                    {% if user.is_authenticated %}
-                    {#% if display_form is True %#}
-                    {% crispy form %}
-                    {#% else %#}
-                    <p>You have already submitted a comment for this product.</p>
-                    {#% endif %#}
-                    {% else %}
-                    <p>You need to <a href="{% url 'account_signup' %}">Register</a> or <a
-                            href="{% url 'account_login' %}">Login</a> to leave a comment. </p>
-                    {% endif %}
-                </div>
-            </div>
+
         </div>
     </div>
 </div>
