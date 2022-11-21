@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     "cloudinary",
     "cloudinary_storage",
     "checkout",
+    "cart",
     # 'bootstrap4',
 ]
 

@@ -47,7 +47,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            {% for item in request.basket.basketitem_set.all %}
+                            {% for item in request.cart.cartitem_set.all %}
                             <tr>
                                 <td>{{ item.product.title }}</td>
                                 <td>{{ item.quantity }}</td>
@@ -63,7 +63,7 @@
                             <tr class="total">
                                 <td></td>
                                 <td>Total</td>
-                                <td class="item-total">€{{ request.basket.total|intcomma}}</td>
+                                <td class="item-total">€{{ request.cart.total|intcomma}}</td>
                             </tr>
                         </tbody>
                     </table>
