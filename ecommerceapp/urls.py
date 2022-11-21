@@ -18,7 +18,6 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.urls import include, path
-from django.views.generic.base import TemplateView
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -27,7 +26,7 @@ urlpatterns = [
     path("products/", include("products.urls")),
     path("checkout/", include("checkout.urls")),
     path("cart/", include("cart.urls")),
-    path("", TemplateView.as_view(template_name="homepage.html"), name="home"),
+    path("", include("pages.urls")),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

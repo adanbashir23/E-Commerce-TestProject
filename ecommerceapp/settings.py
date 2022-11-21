@@ -10,8 +10,9 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
-from pathlib import Path
 import os
+from pathlib import Path
+
 import environ
 from django.contrib.messages import constants as messages
 
@@ -58,6 +59,8 @@ INSTALLED_APPS = [
     "cloudinary_storage",
     "checkout",
     "cart",
+    "django.contrib.humanize",
+    "pages",
     # 'bootstrap4',
 ]
 
@@ -69,6 +72,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "cart.middleware.CartMiddleware",
 ]
 
 ROOT_URLCONF = "ecommerceapp.urls"
@@ -161,7 +165,7 @@ STATICFILES_DIRS = (os.path.join(BASE_DIR, "static/"),)
 STATIC_ROOT = "staticfiles"
 
 MEDIA_URL = "/media/"
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 CLOUDINARY_STORAGE = {
     "CLOUD_NAME": env("CLOUD_NAME"),
@@ -183,11 +187,11 @@ ACCOUNT_FORMS = {
 }
 
 MESSAGE_TAGS = {
-    messages.DEBUG: 'alert-info',
-    messages.INFO: 'alert-info',
-    messages.SUCCESS: 'alert-success',
-    messages.WARNING: 'alert-warning',
-    messages.ERROR: 'alert-danger',
+    messages.DEBUG: "alert-info",
+    messages.INFO: "alert-info",
+    messages.SUCCESS: "alert-success",
+    messages.WARNING: "alert-warning",
+    messages.ERROR: "alert-danger",
 }
 
 LOGIN_REDIRECT_URL = "home"

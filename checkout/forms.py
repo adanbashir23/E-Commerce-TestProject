@@ -1,9 +1,7 @@
-from django import forms
-
-
 from crispy_forms.bootstrap import Field, StrictButton
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Div, Fieldset, Layout
+from django import forms
 
 from checkout.models import Order
 

@@ -1,5 +1,5 @@
-from django.urls import reverse
 from django.shortcuts import redirect
+from django.urls import reverse
 
 
 class CartNotEmptyMixin:
@@ -7,12 +7,12 @@ class CartNotEmptyMixin:
 
     def dispatch(self, request, *args, **kwargs):
         # check cart is part of request object
-        if hasattr(self.request, 'cart'):
+        if hasattr(self.request, "cart"):
             cart = self.request.cart
         else:
             cart = None
         # make sure the user's cart is not empty
         if not cart or cart.count() == 0:
-            return redirect(reverse('cart'))
+            return redirect(reverse("cart"))
 
         return super().dispatch(request, *args, **kwargs)

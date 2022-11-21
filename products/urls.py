@@ -3,14 +3,14 @@ from django.urls import path
 
 from .views import (
     ProductCreateView,
+    ProductDeleteView,
     ProductDetail,
     ProductListView,
-    ProductDeleteView,
     ProductUpdateView,
 )
 
 urlpatterns = [
-    path("list/", ProductListView.as_view(), name="product_list"),
+    path("", ProductListView.as_view(), name="product_list"),
     path("create/", ProductCreateView.as_view(), name="product_create"),
     path("<uuid:pk>/", ProductDetail.as_view(), name="product_detail"),
     path("<uuid:pk>/update/", ProductUpdateView.as_view(), name="product_edit"),

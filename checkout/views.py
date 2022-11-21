@@ -1,11 +1,11 @@
 # Create your views here.
+# pylint: disable=E1120
 import stripe
-
 from django.conf import settings
 from django.contrib import messages
-from django.urls import reverse
-from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
+from django.shortcuts import redirect, render
+from django.urls import reverse
 
 from checkout.forms import OrderDetailsForm, PaymentProcessingForm
 
@@ -64,8 +64,8 @@ def process_order(request):
                         "Your payment card has been declined. Please try "
                         "another card."
                     )
-                except Exception as e:
-                    print(e)
+                except Exception as err:
+                    print(err)
                     messages.error(
                         request,
                         "There was a problem processing your order,"
