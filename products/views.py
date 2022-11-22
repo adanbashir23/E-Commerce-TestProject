@@ -1,26 +1,24 @@
 """Product views"""
 # pylint: disable=E1101
 
-# Create models here
-from django.urls import reverse_lazy, reverse
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseForbidden
 from django.shortcuts import get_object_or_404
 
-
-from django.contrib.auth.mixins import LoginRequiredMixin
-
+# Create models here
+from django.urls import reverse, reverse_lazy
 from django.views.generic import (
-    ListView,
-    DetailView,
     CreateView,
-    UpdateView,
     DeleteView,
-    View,
+    DetailView,
     FormView,
+    ListView,
+    UpdateView,
+    View,
 )
 
-from .models import Product, Comment
 from .forms import CommentForm
+from .models import Comment, Product
 
 # , ProductImage
 

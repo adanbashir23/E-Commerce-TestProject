@@ -14,6 +14,7 @@ from products.models import Product
 
 
 def view_cart(request):
+    """View a cart"""
     if request.method == "POST":
         formset = CartFormSet(request.POST, instance=request.cart)
 
@@ -42,7 +43,8 @@ def view_cart(request):
 
 @transaction.atomic
 def add_to_cart(request, product_id):
-    product = get_object_or_404(Product, id=product_id)
+    """add a new product to the cart"""
+    product = get_object_or_404(Product, serial_number=product_id)
 
     if hasattr(request, "cart") and request.cart is not None:
         # cart already exists

@@ -18,11 +18,11 @@ class Cart(models.Model):
 
     IN_PROGRESS = 1
     PROCESSED = 2
-    BASKET_STATUS = ((IN_PROGRESS, "Open"), (PROCESSED, "Processed"))
+    CART_STATUS = ((IN_PROGRESS, "Open"), (PROCESSED, "Processed"))
     user = models.ForeignKey(
         get_user_model(), on_delete=models.CASCADE, blank=True, null=True
     )
-    status = models.IntegerField(choices=BASKET_STATUS, default=IN_PROGRESS)
+    status = models.IntegerField(choices=CART_STATUS, default=IN_PROGRESS)
     created_date = models.DateField(auto_now_add=True)
 
     def count(self):
@@ -44,7 +44,7 @@ class Cart(models.Model):
             for product in products:
                 product_id = product[0]
                 quantity = product[1]
-                price = Product.objects.get(id=product_id).price
+                price = Product.objects.get(serial_number=product_id).price
 
                 total += quantity * price
 
