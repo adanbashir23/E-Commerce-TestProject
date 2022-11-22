@@ -2,6 +2,7 @@
 # pylint: disable=E1101
 
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Avg, Q
 from django.http import HttpResponseForbidden
 from django.shortcuts import get_object_or_404
 
@@ -136,3 +137,42 @@ class ProductComment(FormView):
 
     def get_success_url(self):
         return reverse("product_detail", kwargs={"pk": self.pk})
+
+
+class ProductSearchResultsView(ListView):
+    """Return products that match search query"""
+
+    model = Product
+    context_object_name = "search_results"
+    queryset = Product.objects.get_queryset().order_by("product_name")
+    # to avoid inconsistent pagination results order by id
+    template_name = "products/product_search.html"
+    paginate_by = 8
+
+    def get(self, request, *args, **kwargs):
+        return super().get(request, *args, **kwargs)
+
+    def get_queryset(self):
+        """Filter for search terms"""
+        queryset = super().get_queryset()
+
+        keywords = self.request.GET.get("keywords")
+        if keywords:
+            # filter data for anything that contains the kws
+            # use the django Q object to create equivalent of SQL 'OR' query
+            return queryset.filter(
+                Q(product_name__icontains=keywords)
+                | Q(product_brand__icontains=keywords)
+                | Q(category__icontains=keywords)
+                | Q(description__icontains=keywords)
+            ).order_by("product_name")
+
+        else:
+            return ""
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        """Pass through the search terms to autopopulate search box"""
+        context = super().get_context_data(**kwargs)
+        # store search term in results to populate template search box
+        context["search_keywords"] = self.request.GET.get("keywords")
+        return

@@ -11,7 +11,15 @@
                     </a>
                 </div>
                 <div class="m-auto">
-                    SEARCH BAR WILL COME HERE
+                    <div class="nav-search">
+                        <form class="form-inline" action="{% url 'product_search' %}" method="GET">
+                            <input class="form-control mr-sm-2" name="keywords" type="text"
+                                {% if 'search' in request.path %} value="{{ search_keywords }}" {% else %}
+                                placeholder="Search" {% endif %} aria-label="Search">
+                            <button class="search-btn" type="submit" aria-label="Search"><i
+                                    class="fas fa-search"></i></button>
+                        </form>
+                    </div>
                 </div>
                 <div class="user-section">
                     <a href="{% url 'home' %}">
