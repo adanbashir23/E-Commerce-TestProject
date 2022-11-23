@@ -1,6 +1,6 @@
-from django.contrib import admin
+# from django.contrib import admin
 
-from .models import Comment, Product
+# from .models import Comment, Product
 
 # Register your models here.
 # from .models import Product, ProductImage
@@ -20,21 +20,21 @@ from .models import Comment, Product
 #     pass
 
 
-class CommentInline(admin.TabularInline):
-    """Tabular Inline View for Product Reviews"""
+# class CommentInline(admin.TabularInline):
+#     """Tabular Inline View for Product Reviews"""
 
-    model = Comment
-
-
-class ProductAdmin(admin.ModelAdmin):
-    """Update view for admin panel"""
-
-    list_display = ("product_name", "product_brand", "category", "price")
-    list_filter = ("product_brand",)
-
-    inlines = [
-        CommentInline,
-    ]
+#     model = Comment
 
 
-admin.site.register(Product, ProductAdmin)
+# class ProductAdmin(admin.ModelAdmin):
+#     """Update view for admin panel"""
+
+#     list_display = ("product_name", "product_brand", "category", "price")
+#     list_filter = ("product_brand",)
+
+#     inlines = [
+#         CommentInline,
+#     ]
+
+
+# admin.site.register(Product, ProductAdmin)

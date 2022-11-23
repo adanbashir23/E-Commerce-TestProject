@@ -2,7 +2,7 @@
 # pylint: disable=E1101
 
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.db.models import Avg, Q
+from django.db.models import Q
 from django.http import HttpResponseForbidden
 from django.shortcuts import get_object_or_404
 
@@ -33,14 +33,20 @@ class ProductListView(ListView):
     product_count = queryset.count()
     context = {"product_list": queryset, "product_count": product_count}
     template_name = "products/product_list.html"
-    # paginate_by = 8
+    paginate_by = 2
 
 
 class ProductDetail(View):
     """Specify which view to be used dependent on request type"""
 
     def get(self, request, *args, **kwargs):
+        """get product details"""
         view = ProductDetailView.as_view()
+        return view(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        """Post comment to product"""
+        view = ProductComment.as_view()
         return view(request, *args, **kwargs)
 
 
@@ -49,6 +55,24 @@ class ProductDetailView(DetailView):
 
     queryset = Product.objects.all()
     template_name = "products/product_detail.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        # make sure the user is logged in first
+        if self.request.user.is_authenticated:
+            # check to see if user has already posted review for product
+            user_has_reviewed = Comment.objects.filter(product=self.object).filter(
+                user=self.request.user
+            )
+            # if no object was returned then user has not submitted a review
+            if not user_has_reviewed:
+                context["display_form"] = True
+
+        # passthrough form for rendering in template
+        context["form"] = CommentForm()
+
+        return context
 
 
 class ProductCreateView(LoginRequiredMixin, CreateView):
@@ -144,10 +168,9 @@ class ProductSearchResultsView(ListView):
 
     model = Product
     context_object_name = "search_results"
-    queryset = Product.objects.get_queryset().order_by("product_name")
     # to avoid inconsistent pagination results order by id
     template_name = "products/product_search.html"
-    paginate_by = 8
+    paginate_by = 2
 
     def get(self, request, *args, **kwargs):
         return super().get(request, *args, **kwargs)
@@ -166,7 +189,6 @@ class ProductSearchResultsView(ListView):
                 | Q(category__icontains=keywords)
                 | Q(description__icontains=keywords)
             ).order_by("product_name")
-
         else:
             return ""
 
@@ -175,4 +197,4 @@ class ProductSearchResultsView(ListView):
         context = super().get_context_data(**kwargs)
         # store search term in results to populate template search box
         context["search_keywords"] = self.request.GET.get("keywords")
-        return
+        return context

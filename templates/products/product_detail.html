@@ -2,7 +2,7 @@
 {% load humanize %}
 {% load crispy_forms_tags %}
 
-{% block title %} | {{ product.title }}{% endblock %}
+{% block title %} | {{ product.product_name }}{% endblock %}
 {% block content %}
 <div class="row">
     <div class="col-md-6">
@@ -20,10 +20,11 @@
             <h3 class="product-price">€{{ product.price }}</h3>
             {% if product.stock > 0 %}
             <span class="stock in-stock">Available</span>
+            <a href="{% url 'add_to_cart' product_id=product.serial_number %}" class="add-to-basket">Add to Cart</a>
             {% else %}
             <span class="stock out-of-stock">Out of Stock</span>
             {% endif %}
-            <a href="{% url 'add_to_cart' product_id=product.serial_number %}" class="add-to-basket">Add to Cart</a>
+
         </div>
     </div>
     <div class="col-12">
@@ -100,10 +101,9 @@
                 >
                     {% if user.is_authenticated %}
                     {% if display_form is True %}
-                    {# only display form if user has not already posted a comment #}
                     {% crispy form %}
                     {% else %}
-                    <p>You have already submitted a review for this product.</p>
+                    <p>You have already submitted your review for this product.</p>
                     {% endif %}
                     {% else %}
                     <p>
@@ -120,3 +120,4 @@
     </div>
 </div>
 {% endblock %}
+
