@@ -15,6 +15,9 @@ from django.urls import reverse
 class Product(models.Model):
     """Store product model"""
 
+    # class Meta:
+    #     app_label = "Product"
+
     serial_number = models.UUIDField(
         primary_key=True, default=uuid.uuid4, editable=False
     )
@@ -58,6 +61,9 @@ class Product(models.Model):
 
 class Comment(models.Model):
     """Users can leave product comments"""
+
+    # class Meta:
+    #     app_label = "Comment"
 
     comment = models.TextField()
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)

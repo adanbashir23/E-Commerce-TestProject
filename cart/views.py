@@ -34,7 +34,7 @@ def view_cart(request):
 
             formset = CartFormSet(instance=request.cart)
 
-            messages.success(request, "Coupon applied.")
+            # messages.success(request, "Coupon applied.")
             # return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
 
         else:
