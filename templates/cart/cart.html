@@ -63,7 +63,7 @@
                         <div class="form-group">
                         <form method="POST">
                             {% csrf_token %}
-                            <input type="text" class="form-control" name="" placeholder="Add a promocode"></input>
+                            <input type="text" class="form-control" name="promocode" placeholder="Add a promocode"></input>
                             <span class="input-group-append">
                             <button type="submit" class="btn btn-primary">Apply</button>
                             </span>
@@ -72,7 +72,7 @@
                     </td>
                     <td></td>
 
-                    <td>After applying promocode, Total: ${{request.cart.total}}</td>
+                    <td>After applying promocode, Total: ${{request.cart.promocode_total}}</td>
                 </tr>
             </tbody>
         </table>

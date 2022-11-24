@@ -12,30 +12,19 @@ from django.urls import reverse
 from cart.forms import CartFormSet
 from cart.models import Cart, CartItem
 from products.models import Product
-
-# from promocodes.models import Promocode
+from promocodes.models import Promocode
 
 
 def view_cart(request):
     """View a cart"""
-    # cart_object = {"cart": Cart.objects.get(user=request.user)}
     if request.method == "POST":
         formset = CartFormSet(request.POST, instance=request.cart)
-        # promocode = request.POST.get("promocode")
 
         if formset.is_valid():
             formset.save()
             messages.success(request, "Your cart has been updated.")
-            # if promocode:
-            # promocode_object = Promocode.objects.filter(code__icontains=promocode)
-            # cart_object.promocode = promocode_object
-            # cart_object.save()
-            # messages.success(request, "Coupon applied.")
 
             formset = CartFormSet(instance=request.cart)
-
-            # messages.success(request, "Coupon applied.")
-            # return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
 
         else:
             messages.error(

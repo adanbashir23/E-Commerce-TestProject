@@ -5,8 +5,7 @@ from django.db import models
 
 from checkout.models import Order, OrderItem
 from products.models import Product
-
-# , Promocode
+from promocodes.models import Promocode
 
 # Create your models here.
 
@@ -26,9 +25,9 @@ class Cart(models.Model):
     )
     status = models.IntegerField(choices=CART_STATUS, default=IN_PROGRESS)
     created_date = models.DateField(auto_now_add=True)
-    # promocode = models.ForeignKey(
-    #     Promocode, on_delete=models.SET_NULL, null=True, blank=True
-    # )
+    promocode = models.ForeignKey(
+        Promocode, on_delete=models.SET_NULL, null=True, blank=True
+    )
 
     def count(self):
         """Return total number of items in cart"""
@@ -51,16 +50,13 @@ class Cart(models.Model):
                 price = Product.objects.get(serial_number=product_id).price
 
                 total += quantity * price
-
-            # if self.promocode:
-            #     promocode_total = total - ((self.promocode.value) / 100 * total)
-            #     return promocode_total
-
-            return total
+                if self.promocode:
+                    total = total - ((self.promocode.value) / 100 * total)
+                    return total
 
     # def promocode_total(self, total):
-    #     if .code.can_use is True:
-    #         promocode_total = total - ((Promocode.value) / 100 * total)
+    #     if self.promocode:
+    #         promocode_total = total - ((self.promocode.value) / 100 * total)
     #     else:
     #         return promocode_total
 
