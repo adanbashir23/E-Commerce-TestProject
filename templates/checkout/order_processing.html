@@ -51,7 +51,7 @@
                             <tr>
                                 <td>{{ item.product.title }}</td>
                                 <td>{{ item.quantity }}</td>
-                                <td class="item-total">€{{ item.subtotal }}</td>
+                                <td class="item-total">${{ item.subtotal }}</td>
                             </tr>
                             {% endfor %}
                             <tr class="delivery">
@@ -63,7 +63,7 @@
                             <tr class="total">
                                 <td></td>
                                 <td>Total</td>
-                                <td class="item-total">€{{ request.cart.total|intcomma}}</td>
+                                <td class="item-total">${{ request.cart.total|intcomma}}</td>
                             </tr>
                         </tbody>
                     </table>

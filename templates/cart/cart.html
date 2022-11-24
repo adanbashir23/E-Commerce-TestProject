@@ -43,21 +43,36 @@
                         <small class="text-danger">{{ form.quantity.errors|striptags }}</small>
                         {% endif %}
                     </td>
-                    <td class="item-price">€{{ form.instance.product.price }}</td>
-                    <td class="item-total">€{{ form.instance.subtotal }}</td>
+                    <td class="item-price">${{ form.instance.product.price }}</td>
+                    <td class="item-total">${{ form.instance.subtotal }}</td>
                     {% if formset.can_delete %}
                     <td>{{ form.DELETE }}</td>
                     {% endif %}
                 </tr>
 
                 {% endfor %}
-
                 <tr class="total">
                     <td></td>
                     <td><button class="btn btn-sm btn-primary my-2 my-sm-0" type="submit">Update</button></td>
                     <td>Total</td>
-                    <td class="item-total">€{{ request.cart.total}}</td>
+                    <td class="item-total">${{ request.cart.total}}</td>
                     <td></td>
+                </tr>
+                <tr>
+                    <td>Do you wanna apply a promocode?
+                        <div class="form-group">
+                        <form method="POST">
+                            {% csrf_token %}
+                            <input type="text" class="form-control" name="" placeholder="Add a promocode"></input>
+                            <span class="input-group-append">
+                            <button type="submit" class="btn btn-primary">Apply</button>
+                            </span>
+                        </form>
+                        </div>
+                    </td>
+                    <td></td>
+
+                    <td>After applying promocode, Total: ${{request.cart.total}}</td>
                 </tr>
             </tbody>
         </table>

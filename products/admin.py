@@ -1,6 +1,9 @@
-# from django.contrib import admin
+from django.contrib import admin
 
-# from .models import Comment, Product
+# # Register your models here.
+# from .models import Promocode
+
+# admin.site.register(Promocode)
 
 # Register your models here.
 # from .models import Product, ProductImage

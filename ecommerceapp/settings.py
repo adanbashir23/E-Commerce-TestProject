@@ -43,7 +43,6 @@ AUTH_USER_MODEL = "userprofile.UserProfile"
 
 INSTALLED_APPS = [
     "userprofile",
-    "products",
     "django.contrib.admin",
     "django.contrib.humanize",
     "django.contrib.auth",
@@ -57,9 +56,11 @@ INSTALLED_APPS = [
     "crispy_forms",
     "cloudinary",
     "cloudinary_storage",
+    "products",
     "checkout",
     "cart",
     "pages",
+    # "promocodes",
 ]
 
 MIDDLEWARE = [

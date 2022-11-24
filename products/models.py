@@ -64,3 +64,17 @@ class Comment(models.Model):
     product = models.ForeignKey(
         Product, on_delete=models.CASCADE, related_name="comments"
     )
+
+
+# class Promocode(models.Model):
+#     """Promocode"""
+
+#     # alphanumeric = RegexValidator(
+#     #     r"^[0-9a-zA-Z]*$", "Only alphanumeric characters are allowed."
+#     # )
+#     code = models.CharField(max_length=10, unique=True)
+#     # , validators=[alphanumeric])
+#     value = models.IntegerField(default=50)
+#     valid_till_date = models.DateField()
+#     # minimum_amount = models.IntegerField(default=10)
+#     active = models.BooleanField(default=True)

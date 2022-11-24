@@ -3,6 +3,7 @@ from django.contrib import messages
 from django.contrib.auth.signals import user_logged_in
 from django.db import transaction
 from django.dispatch import receiver
+from django.http import HttpResponseRedirect
 
 # Create your views here.
 from django.shortcuts import get_object_or_404, redirect, render
@@ -12,17 +13,30 @@ from cart.forms import CartFormSet
 from cart.models import Cart, CartItem
 from products.models import Product
 
+# from promocodes.models import Promocode
+
 
 def view_cart(request):
     """View a cart"""
+    # cart_object = {"cart": Cart.objects.get(user=request.user)}
     if request.method == "POST":
         formset = CartFormSet(request.POST, instance=request.cart)
+        # promocode = request.POST.get("promocode")
 
         if formset.is_valid():
             formset.save()
             messages.success(request, "Your cart has been updated.")
+            # if promocode:
+            # promocode_object = Promocode.objects.filter(code__icontains=promocode)
+            # cart_object.promocode = promocode_object
+            # cart_object.save()
+            # messages.success(request, "Coupon applied.")
 
             formset = CartFormSet(instance=request.cart)
+
+            messages.success(request, "Coupon applied.")
+            # return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
+
         else:
             messages.error(
                 request,
@@ -39,6 +53,30 @@ def view_cart(request):
     context = {"formset": formset}
 
     return render(request, "cart/cart.html", context)
+
+
+# def cart(request):
+#     cart_object = {"cart": Cart.objects.get(is_active=True, user=request.user)}
+#     if request.method == "POST":
+#         promocode = request.POST.get("promocode")
+#         promocode_object = Promocode.objects.filter(code__icontains=promocode)
+
+#         if not promocode_object.exists():
+#             messages.warning(request, "Invalid Coupon.")
+#             return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
+
+#         if cart_object.promocode:
+#             messages.warning(request, "Coupon already exists.")
+#             return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
+
+#         cart_object.promocode = promocode_object
+#         cart_object.save()
+
+#         messages.success(request, "Coupon applied.")
+#         return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
+
+#     context = {"cart": cart_object}
+#     return render(request, "cart/cart.html", context)
 
 
 @transaction.atomic
