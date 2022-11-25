@@ -15,8 +15,8 @@ from django.urls import reverse
 class Product(models.Model):
     """Store product model"""
 
-    # class Meta:
-    #     app_label = "Product"
+    class Meta:
+        permissions = (("can_edit", "can_delete"),)
 
     serial_number = models.UUIDField(
         primary_key=True, default=uuid.uuid4, editable=False

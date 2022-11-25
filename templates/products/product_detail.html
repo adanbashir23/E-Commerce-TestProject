@@ -40,8 +40,10 @@
                         aria-selected="true"
                     >Description</a>
                     {% if request.user == product.user %}
-                    <a href="{%url 'product_edit' product.serial_number %}">Edit Product</a>
-                    <a href="{%url 'product_delete' product.serial_number %}">Delete Product</a>
+                    {#% if perms.product.user.can_edit %#}
+                    <li><a href="{%url 'product_edit' product.serial_number %}">Edit Product</a></li>
+                    <li><a href="{%url 'product_delete' product.serial_number %}">Delete Product</a></li>
+                    {#%endif%#}
                     {%endif%}
                 </li>
                 <li>

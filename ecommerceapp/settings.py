@@ -22,6 +22,8 @@ from django.contrib.messages import constants as messages
 # import cloudinary.uploader
 # import cloudinary.api
 
+
+# mimetypes.add_type("text/javascript", ".js", True)
 env = environ.Env()
 environ.Env.read_env()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -35,7 +37,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = env("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = [
     "0.0.0.0",
@@ -167,9 +169,9 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
-STATIC_URL = "static/"
-STATICFILES_DIRS = (os.path.join(BASE_DIR, "static/"),)
-STATIC_ROOT = "staticfiles"
+STATIC_URL = "/static/"
+STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"),)
+STATIC_ROOT = os.path.join(BASE_DIR, "assets")
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")

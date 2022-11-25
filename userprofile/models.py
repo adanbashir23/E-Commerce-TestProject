@@ -46,7 +46,10 @@ class UserProfile(AbstractUser):
     city = models.CharField(max_length=50, null=True)
     country = models.CharField(max_length=100, null=True)
     post_code = models.CharField(max_length=30, null=True)
-    avatar = models.ImageField(upload_to="images/", default="images/avatar.jpeg")
+    avatar = models.ImageField(
+        upload_to="images/",
+        default="https://res.cloudinary.com/dxmms7rbf/image/upload/v1660544735/samples/ecommerce/analog-classic.jpg",
+    )
 
     USERNAME_FIELD = "email"
 

@@ -1,5 +1,6 @@
 """Product views"""
 # pylint: disable=E1101
+from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.core.exceptions import PermissionDenied
 from django.db.models import Q
@@ -105,6 +106,7 @@ class ProductCreateView(LoginRequiredMixin, CreateView):
 
 
 class ProductDeleteView(PermissionRequiredMixin, DeleteView):
+    # class ProductDeleteView(DeleteView):
     """Authorized users can delete products"""
 
     permission_required = "products.delete_product"
@@ -114,11 +116,12 @@ class ProductDeleteView(PermissionRequiredMixin, DeleteView):
     success_url = reverse_lazy("product_list")
 
 
-# class ProductUpdateView(PermissionRequiredMixin, UpdateView):
-class ProductUpdateView(UpdateView):
-    """Authorized users can update all product fields"""
+class ProductUpdateView(PermissionRequiredMixin, UpdateView):
 
-    # def get_object(self, request, product_id):
+    # class ProductUpdateView(UpdateView):
+    """Authorized users can update all product fields"""
+    permission_required = "products.can_edit"
+    # def get_object(request, product.):
     #     product = Product.objects.get(pk=product_id)
     #     if request.user == product.user:
     model = Product
@@ -134,7 +137,7 @@ class ProductUpdateView(UpdateView):
     context_object_name = "product"
     template_name = "products/product_update.html"
     # else:
-    # return redirect("home")
+    #     return reverse("home")
 
     # permission_required = "products.change_product"
 
