@@ -1,9 +1,8 @@
 """_summary_"""
 from crispy_forms.bootstrap import Field
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Submit, Div, Fieldset, Layout
+from crispy_forms.layout import Div, Fieldset, Layout, Submit
 from django import forms
-
 
 from .models import Comment
 
@@ -13,8 +12,9 @@ class CommentForm(forms.ModelForm):
 
     class Meta:
         """summary"""
+
         model = Comment
-        fields = '__all__'
+        fields = ["comment"]
 
     def __init__(self, *args, **kwargs):
         super(CommentForm, self).__init__(*args, **kwargs)
@@ -36,7 +36,7 @@ class CommentForm(forms.ModelForm):
                 "Add a comemmt",
                 Div(
                     Field(
-                        'comment',
+                        "comment",
                         wrapper_class="col-12 col-md-10",
                         rows=5,
                         placeholder="Add your comment here",

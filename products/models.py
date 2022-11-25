@@ -2,13 +2,14 @@
 """Product model"""
 
 import uuid
-from django.db import models
 
-# from userprofile.models import UserProfile
+from django.contrib.auth import get_user_model
+from django.db import models
 
 # Create your models here.
 from django.urls import reverse
-from django.contrib.auth import get_user_model
+
+# from userprofile.models import UserProfile
 
 
 class Product(models.Model):

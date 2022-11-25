@@ -10,9 +10,11 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
-from pathlib import Path
 import os
+from pathlib import Path
+
 import environ
+from django.contrib.messages import constants as messages
 
 # import cloudinary
 # import cloudinary.uploader
@@ -25,7 +27,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 # Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
+# See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/*-
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = env("SECRET_KEY")
@@ -43,20 +45,21 @@ INSTALLED_APPS = [
     "userprofile",
     "products",
     "django.contrib.admin",
+    "django.contrib.humanize",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    # "userprofile.apps.UserProfileConfig",
     "allauth",
     "allauth.account",
     "django_extensions",
     "crispy_forms",
     "cloudinary",
     "cloudinary_storage",
-
-    # 'bootstrap4',
+    "checkout",
+    "cart",
+    "pages",
 ]
 
 MIDDLEWARE = [
@@ -67,6 +70,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "cart.middleware.CartMiddleware",
 ]
 
 ROOT_URLCONF = "ecommerceapp.urls"
@@ -159,7 +163,7 @@ STATICFILES_DIRS = (os.path.join(BASE_DIR, "static/"),)
 STATIC_ROOT = "staticfiles"
 
 MEDIA_URL = "/media/"
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 CLOUDINARY_STORAGE = {
     "CLOUD_NAME": env("CLOUD_NAME"),
@@ -180,6 +184,14 @@ ACCOUNT_FORMS = {
     "login": "userprofile.forms.UserProfileSigninForm",
 }
 
+MESSAGE_TAGS = {
+    messages.DEBUG: "alert-info",
+    messages.INFO: "alert-info",
+    messages.SUCCESS: "alert-success",
+    messages.WARNING: "alert-warning",
+    messages.ERROR: "alert-danger",
+}
+
 LOGIN_REDIRECT_URL = "home"
 LOGOUT_REDIRECT_URL = "home"
 ACCOUNT_USERNAME_REQUIRED = False
@@ -190,3 +202,6 @@ ACCOUNT_SESSION_REMEMBER = True
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_PRESERVE_USERNAME_CASING = False
 CRISPY_TEMPLATE_PACK = "bootstrap4"
+
+STRIPE_PUBLISHABLE_KEY = env("STRIPE_PUBLISHABLE_KEY")
+STRIPE_SECRET_KEY = env("STRIPE_SECRET_KEY")

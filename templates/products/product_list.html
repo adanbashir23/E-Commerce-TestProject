@@ -3,14 +3,28 @@
 {% block title %} | Products{% endblock %}
 {% block content %}
 <h1>Products</h1>
-{#% if product_count > 0 %#}
-    {% for product in product_list%}
-<a href="{{product.get_absolute_url}}"><h5 class="product-title">{{ product.product_name }}</h5></a>
-<h6 class="product-price">€{{ product.price }}</h6>
-<img src="{{ product.images.url }}" alt="Product image">
-{% endfor %}
-    {#% else %#}
-<p>There are currently no products to display. Please check back later.</p>
-{#% endif%#}
+<div class="row">
+    <div class="col-12">
+        <div class="float-right mb-2">
+            {#% include 'partials/_product_admin.html' %#}
+        </div>
+    </div>
+
+    {% if product_list %}
+    {% for product in product_list %}
+    {% if product.is_live %}
+
+    {% include 'partials/_product_listing.html' %}
+
+    {% endif %}
+    {% endfor %}
+    {# pagination section #}
+    {% if is_paginated %}
+    {% include 'partials/_product_pagination.html' %}
+    {% endif %}
+    {# end pagination section #}
+    {% else %}
+    <p>There are currently no products to display. Please check back later.</p>
+    {% endif %}
 </div>
 {% endblock %}
