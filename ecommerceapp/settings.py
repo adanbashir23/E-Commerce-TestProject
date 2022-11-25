@@ -41,6 +41,7 @@ AUTH_USER_MODEL = "userprofile.UserProfile"
 
 INSTALLED_APPS = [
     "userprofile",
+    "products",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -158,6 +159,7 @@ STATICFILES_DIRS = (os.path.join(BASE_DIR, "static/"),)
 STATIC_ROOT = "staticfiles"
 
 MEDIA_URL = "/media/"
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 CLOUDINARY_STORAGE = {
     "CLOUD_NAME": env("CLOUD_NAME"),

@@ -20,6 +20,11 @@
 
     <main class="container main">
         {% include 'partials/_alerts.html' %}
+        {% if request.user.is_authenticated %}
+        <a href="{% url 'product_create' %}">
+            Create Product
+        </a>
+        {% endif %}
         {% block content %}{% endblock %}
     </main>
 
