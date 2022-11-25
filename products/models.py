@@ -37,7 +37,7 @@ class Product(models.Model):
     #     images = models.FileField(upload_to="images/")
 
     def comment_count(self):
-        """Return total reviews for product"""
+        """Return total comments for product"""
         count = self.comments.aggregate(count=models.Count("comment"))["count"]
 
         if count is None:
