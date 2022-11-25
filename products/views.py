@@ -2,7 +2,10 @@
 # pylint: disable=E1101
 
 # Create models here
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
+from django.http import HttpResponseForbidden
+from django.shortcuts import get_object_or_404
+
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 
@@ -13,17 +16,21 @@ from django.views.generic import (
     UpdateView,
     DeleteView,
     View,
+    FormView,
 )
 
-from .models import Product
+from .models import Product, Comment
+from .forms import CommentForm
+
 # , ProductImage
+
 
 class ProductListView(ListView):
     """List products from database with pagination"""
 
     model = Product
     queryset = Product.objects.get_queryset().order_by("product_name")
-    #     rating=Avg('reviews__rating')).order_by('id')
+    #     rating=Avg('comments__rating')).order_by('id')
     product_count = queryset.count()
     context = {"product_list": queryset, "product_count": product_count}
     template_name = "products/product_list.html"
@@ -39,7 +46,7 @@ class ProductDetail(View):
 
 
 class ProductDetailView(DetailView):
-    """Render output for a single product and enable review capture"""
+    """Render output for a single product and enable comment capture"""
 
     queryset = Product.objects.all()
     template_name = "products/product_detail.html"
@@ -100,3 +107,34 @@ class ProductUpdateView(UpdateView):
     ]
     context_object_name = "product"
     template_name = "products/product_update.html"
+
+
+class ProductComment(FormView):
+    """Displayed on product detail, used to add comments"""
+
+    template_name = "products/product_detail.html"
+    form_class = CommentForm
+    model = Comment
+
+    def post(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return HttpResponseForbidden()
+
+        form = self.form_class(request.POST)
+
+        # store the product id passed through the url(defined as pk in urls.py)
+        self.pk = kwargs.get("pk")
+
+        if form.is_valid():
+            # foreign key objects not yet added, prevent saving and add them
+            comment = form.save(commit=False)
+            comment.product = get_object_or_404(Product, pk=self.pk)
+            comment.user = self.request.user
+            comment.save()
+        else:
+            return self.form_invalid(form)
+
+        return super().post(request, *args, **kwargs)
+
+    def get_success_url(self):
+        return reverse("product_detail", kwargs={"pk": self.pk})
