@@ -17,7 +17,7 @@
             <div class="product-rating">
                 <span class="product-reviews"> {{ product.comment_count}} comments</span>
             </div>
-            <h3 class="product-price">€{{ product.price }}</h3>
+            <h3 class="product-price">${{ product.price }}</h3>
             {% if product.stock > 0 %}
             <span class="stock in-stock">Available</span>
             <a href="{% url 'add_to_cart' product_id=product.serial_number %}" class="add-to-basket">Add to Cart</a>
@@ -39,8 +39,10 @@
                         aria-controls="description"
                         aria-selected="true"
                     >Description</a>
+                    {% if request.user == product.user %}
                     <a href="{%url 'product_edit' product.serial_number %}">Edit Product</a>
                     <a href="{%url 'product_delete' product.serial_number %}">Delete Product</a>
+                    {%endif%}
                 </li>
                 <li>
                     <a

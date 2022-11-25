@@ -126,6 +126,7 @@ class UserProfileForm(forms.ModelForm):
             Fieldset(
                 "Personal Details",
                 Div(
+                    # Field("avatar", css_class="col-12 col-sm-6 " "col-md-4"),
                     Field("full_name", wrapper_class="col-12 col-sm-6 " "col-md-4"),
                     css_class="row",
                 ),

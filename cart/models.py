@@ -5,6 +5,7 @@ from django.db import models
 
 from checkout.models import Order, OrderItem
 from products.models import Product
+from promocodes.models import Promocode
 
 # Create your models here.
 
@@ -24,6 +25,9 @@ class Cart(models.Model):
     )
     status = models.IntegerField(choices=CART_STATUS, default=IN_PROGRESS)
     created_date = models.DateField(auto_now_add=True)
+    promocode = models.ForeignKey(
+        Promocode, on_delete=models.SET_NULL, null=True, blank=True
+    )
 
     def count(self):
         """Return total number of items in cart"""
@@ -39,7 +43,6 @@ class Cart(models.Model):
         # get tuple which will be used to query product object for price
         products = self.cartitem_set.all().values_list("product_id", "quantity")
         total = 0
-
         if products:
             for product in products:
                 product_id = product[0]
@@ -47,8 +50,15 @@ class Cart(models.Model):
                 price = Product.objects.get(serial_number=product_id).price
 
                 total += quantity * price
+                if self.promocode:
+                    total = total - ((self.promocode.value) / 100 * total)
+                    return total
 
-        return total
+    # def promocode_total(self, total):
+    #     if self.promocode:
+    #         promocode_total = total - ((self.promocode.value) / 100 * total)
+    #     else:
+    #         return promocode_total
 
     def create_order(self, order_details, stripe_id=None):
         """Convert active cart into an order in the checkout app"""
@@ -125,10 +135,12 @@ class CartItem(models.Model):
     )
     date_added = models.DateField(auto_now_add=True)
 
-    # def __str__(self):
-    #     return f"Item Total: {self.quantity * self.product.price} (Quantity: "
-    #     f"{self.quantity}, Price: {self.product.price}) - "
-    #     f"Product: {self.product.product_name} "
+    def __str__(self):
+        return (
+            f"Item Total: {self.quantity * self.product.price} (Quantity: "
+            f"{self.quantity}, Price: {self.product.price}) - "
+            f"Product: {self.product.product_name} "
+        )
 
     def subtotal(self):
         """Return per item total's"""

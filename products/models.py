@@ -15,6 +15,9 @@ from django.urls import reverse
 class Product(models.Model):
     """Store product model"""
 
+    # class Meta:
+    #     app_label = "Product"
+
     serial_number = models.UUIDField(
         primary_key=True, default=uuid.uuid4, editable=False
     )
@@ -59,8 +62,25 @@ class Product(models.Model):
 class Comment(models.Model):
     """Users can leave product comments"""
 
+    # class Meta:
+    #     app_label = "Comment"
+
     comment = models.TextField()
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
     product = models.ForeignKey(
         Product, on_delete=models.CASCADE, related_name="comments"
     )
+
+
+# class Promocode(models.Model):
+#     """Promocode"""
+
+#     # alphanumeric = RegexValidator(
+#     #     r"^[0-9a-zA-Z]*$", "Only alphanumeric characters are allowed."
+#     # )
+#     code = models.CharField(max_length=10, unique=True)
+#     # , validators=[alphanumeric])
+#     value = models.IntegerField(default=50)
+#     valid_till_date = models.DateField()
+#     # minimum_amount = models.IntegerField(default=10)
+#     active = models.BooleanField(default=True)

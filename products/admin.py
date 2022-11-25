@@ -1,6 +1,9 @@
 # from django.contrib import admin
 
-# from .models import Comment, Product
+# # Register your models here.
+# from .models import Promocode
+
+# admin.site.register(Promocode)
 
 # Register your models here.
 # from .models import Product, ProductImage
@@ -29,12 +32,14 @@
 # class ProductAdmin(admin.ModelAdmin):
 #     """Update view for admin panel"""
 
-#     list_display = ("product_name", "product_brand", "category", "price")
-#     list_filter = ("product_brand",)
+#     def has_change_permission(request, obj=None, user):
+#         product = request.product
+#         if request.user == product.user:
+#             return True
+#         else:
+#             return False
+#         # Should return True if editing obj is permitted, False otherwise.
+#         # If obj is None, should return True or False to indicate whether editing of objects of this type is permitted in general
 
-#     inlines = [
-#         CommentInline,
-#     ]
 
-
-# admin.site.register(Product, ProductAdmin)
+# admin.site.register(Product,ProductAdmin)
