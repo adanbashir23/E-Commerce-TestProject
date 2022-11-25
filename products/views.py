@@ -1,10 +1,10 @@
 """Product views"""
 # pylint: disable=E1101
-
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.core.exceptions import PermissionDenied
 from django.db.models import Q
 from django.http import HttpResponseForbidden
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
 
 # Create models here
 from django.urls import reverse, reverse_lazy
@@ -104,20 +104,23 @@ class ProductCreateView(LoginRequiredMixin, CreateView):
     #     return render(request, "product_detail.html", {"images": images})
 
 
-class ProductDeleteView(DeleteView):
+class ProductDeleteView(PermissionRequiredMixin, DeleteView):
     """Authorized users can delete products"""
 
-    # permission_required = 'products.delete_product'
+    permission_required = "products.delete_product"
     model = Product
     context_object_name = "product"
     template_name = "products/product_delete.html"
     success_url = reverse_lazy("product_list")
 
 
+# class ProductUpdateView(PermissionRequiredMixin, UpdateView):
 class ProductUpdateView(UpdateView):
     """Authorized users can update all product fields"""
 
-    # permission_required = 'products.change_product'
+    # def get_object(self, request, product_id):
+    #     product = Product.objects.get(pk=product_id)
+    #     if request.user == product.user:
     model = Product
     fields = [
         "product_name",
@@ -130,6 +133,10 @@ class ProductUpdateView(UpdateView):
     ]
     context_object_name = "product"
     template_name = "products/product_update.html"
+    # else:
+    # return redirect("home")
+
+    # permission_required = "products.change_product"
 
 
 class ProductComment(FormView):

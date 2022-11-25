@@ -39,8 +39,10 @@
                         aria-controls="description"
                         aria-selected="true"
                     >Description</a>
+                    {% if request.user == product.user %}
                     <a href="{%url 'product_edit' product.serial_number %}">Edit Product</a>
                     <a href="{%url 'product_delete' product.serial_number %}">Delete Product</a>
+                    {%endif%}
                 </li>
                 <li>
                     <a
