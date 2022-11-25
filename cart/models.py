@@ -50,9 +50,9 @@ class Cart(models.Model):
                 price = Product.objects.get(serial_number=product_id).price
 
                 total += quantity * price
-                if self.promocode:
-                    total = total - ((self.promocode.value) / 100 * total)
-                    return total
+                # if self.promocode:
+                #     total = total - ((self.promocode.value) / 100 * total)
+            return total
 
     # def promocode_total(self, total):
     #     if self.promocode:
