@@ -1,0 +1,36 @@
+.container {
+    max-width: 1000px;
+}
+.main {
+    max-width: 1000px;
+    min-height: 700px;
+}
+.navbar {
+    border-bottom: 1px solid rgba(0, 0, 0, .0975);
+}
+.user-section a {
+    padding-left: 15px;
+}
+.user-section i.fa {
+    font-size: 22px;
+    color: #000d40;
+}
+.search-form input {
+    font-size: 13px;
+    text-align: center;
+}
+.footer {
+    font-size: 12px;
+    padding-top: 30px;
+}
+.footer ul {
+    padding-left: 0;
+}
+.footer ul > li {
+    display: inline;
+    padding-right: 15px;
+    color: #003569;
+}
+.footer p {
+    color: #999;
+}
