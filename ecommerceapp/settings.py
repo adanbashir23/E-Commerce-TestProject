@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/3.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
-import mimetypes
+# import mimetypes
 import os
 from pathlib import Path
 
@@ -17,7 +17,7 @@ import dj_database_url
 import environ
 from django.contrib.messages import constants as messages
 
-mimetypes.add_type("text/css", ".css", True)
+# mimetypes.add_type("text/css", ".css", True)
 # import cloudinary
 # import cloudinary.uploader
 # import cloudinary.api
