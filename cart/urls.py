@@ -1,8 +1,9 @@
+# pylint: disable=E0611
 from django.urls import path
 
-from .views import add_to_cart, view_cart
+from .views import AddToCart, ViewCart
 
 urlpatterns = [
-    path("", view_cart, name="cart"),
-    path("add/<uuid:product_id>/", add_to_cart, name="add_to_cart"),
+    path("", ViewCart.as_view(), name="cart"),
+    path("add/<uuid:product_id>/", AddToCart.as_view(), name="add_to_cart"),
 ]

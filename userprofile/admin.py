@@ -1,3 +1,4 @@
+"""User Profile admin"""
 from django.contrib import admin
 from django.contrib.auth import get_user_model
 from django.contrib.auth.admin import UserAdmin
@@ -9,6 +10,8 @@ UserProfile = get_user_model()
 
 
 class UserProfileAdmin(UserAdmin):
+    """User profile admin"""
+
     list_display = ("email", "first_name", "last_name")
     list_display_links = ("email",)
 

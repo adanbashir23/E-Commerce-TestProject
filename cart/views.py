@@ -8,23 +8,40 @@ from django.http import HttpResponseRedirect
 # Create your views here.
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
+from django.utils.decorators import method_decorator
+from django.views import View
 
 from cart.forms import CartFormSet
 from cart.models import Cart, CartItem
-from products.models import Product
-from promocodes.models import Promocode
+from products.models import Product, Promocode
 
 
-def view_cart(request):
+class ViewCart(View):
     """View a cart"""
-    if request.method == "POST":
+
+    def post(self, request):
+        # if request.method == "POST":
+        cart_object = Cart.objects.get(user=request.user)
+
+        promocode = request.POST.get("promocode")
+        promocode_object = Promocode.objects.filter(code__icontains=promocode)
         formset = CartFormSet(request.POST, instance=request.cart)
 
         if formset.is_valid():
             formset.save()
             messages.success(request, "Your cart has been updated.")
-
             formset = CartFormSet(instance=request.cart)
+
+            # if promocode_object.is_applied is False:
+            cart_object.promocode = promocode_object[0]
+            # promocode_object.is_applied = True
+            # promocode_object.save()
+            # print(promocode_object.is_applied)
+            # cart_object.promocode |= promocode_object
+            cart_object.save()
+            messages.success(request, "Coupon applied.")
+            # else:
+            # messages.error(request, "Coupon Invalid.")
 
         else:
             messages.error(
@@ -32,16 +49,17 @@ def view_cart(request):
                 "Your cart could not be updated, please review any "
                 "error messages below.",
             )
+        return redirect(reverse("cart"))
 
-    else:
+    def get(self, request):
         if hasattr(request, "cart"):
             formset = CartFormSet(instance=request.cart)
         else:
             formset = None
 
-    context = {"formset": formset}
+        context = {"formset": formset}
 
-    return render(request, "cart/cart.html", context)
+        return render(request, "cart/cart.html", context)
 
 
 # def cart(request):
@@ -68,54 +86,70 @@ def view_cart(request):
 #     return render(request, "cart/cart.html", context)
 
 
-@transaction.atomic
-def add_to_cart(request, product_id):
+# @method_decorator(transaction.atomic)
+class AddToCart(View):
+    # template_name = "cart/cart.html"
+    # form_class = CartFormSet
     """add a new product to the cart"""
-    product = get_object_or_404(Product, serial_number=product_id)
 
-    if hasattr(request, "cart") and request.cart is not None:
-        # cart already exists
-        cart = request.cart
-    else:
-        # no cart in request object - this is a new cart
-        if request.user.is_authenticated:
-            user = request.user
+    # @transaction.atomic
+    @method_decorator(transaction.atomic)
+    def get(self, request, product_id):
+        user = ""
+        product = get_object_or_404(Product, serial_number=product_id)
+
+        if hasattr(request, "cart") and request.cart is not None:
+            # cart already exists
+            cart = request.cart
         else:
-            user = None
+            # no cart in request object - this is a new cart
+            if request.user.is_authenticated:
+                # sif request.user != product.user:
+                user = request.user
+            else:
+                user = None
 
-        # create new cart and store in session var for accessing
-        cart = Cart.objects.create(user=user)
-        request.session["cart_id"] = cart.id
+            # create new cart and store in session var for accessing
+            cart = Cart.objects.create(user=user)
+            request.session["cart_id"] = cart.id
+        # context = {"cart": cart, "product": product, "user": user}
+        # return render(request, "cart/cart.html", context)
+        # return render(cart, user, product)
+        # return cart, product
 
-    # cart exists (otherwise raise 404), add or update cart item
-    cart_item, new = CartItem.objects.get_or_create(cart=cart, product=product)
+        # def post(self, request, product, cart, user):
+        # cart = Cart.objects.create(user=user)
+        # request.session["cart_id"] = cart.id
+        # cart exists (otherwise raise 404), add or update cart item
+        cart_item, new = CartItem.objects.get_or_create(cart=cart, product=product)
 
-    if new:
-        # new product in cart
-        messages.success(request, f"{product.product_name} added to cart.")
-    else:
-        # product already exists
-        # make sure that cart quantity does not exceed maximum amount
-        if cart_item.quantity < 5:
-            # update quantity
-            cart_item.quantity += 1
-            cart_item.save()
-            messages.info(
-                request,
-                f"{product.product_name} quantity now \
-                    {cart_item.quantity}.",
-            )
+        if new:
+            # new product in cart
+            messages.success(request, f"{product.product_name} added to cart.")
         else:
-            messages.warning(
-                request,
-                "You have the maximum permitted amount of this item \
+            # product already exists
+            # make sure that cart quantity does not exceed maximum amount
+            if cart_item.quantity < 5:
+                # update quantity
+                cart_item.quantity += 1
+                cart_item.save()
+                messages.info(
+                    request,
+                    f"{product.product_name} quantity now \
+                        {cart_item.quantity}.",
+                )
+            else:
+                messages.warning(
+                    request,
+                    "You have the maximum permitted amount of this item \
                     in your cart, no more can be added.",
-            )
+                )
 
-    return redirect(reverse("cart"))
+        return redirect(reverse("cart"))
 
 
 @receiver(user_logged_in)
+# class GetCart(View):
 def get_cart(sender, user, request, **kwargs):
     """When user logs in, retrieve cart and merge with existing"""
 

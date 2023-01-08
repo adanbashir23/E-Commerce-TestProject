@@ -1,11 +1,12 @@
 # pylint: disable=E1101
+from decimal import Decimal
+
 from django.contrib.auth import get_user_model
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 
 from checkout.models import Order, OrderItem
-from products.models import Product
-from promocodes.models import Promocode
+from products.models import Product, Promocode
 
 # Create your models here.
 
@@ -50,15 +51,22 @@ class Cart(models.Model):
                 price = Product.objects.get(serial_number=product_id).price
 
                 total += quantity * price
-                # if self.promocode:
-                #     total = total - ((self.promocode.value) / 100 * total)
             return total
 
-    # def promocode_total(self, total):
-    #     if self.promocode:
-    #         promocode_total = total - ((self.promocode.value) / 100 * total)
-    #     else:
-    #         return promocode_total
+    def promocode_total(self):
+        """Return total price after promocode is applied"""
+        products = self.cartitem_set.all().values_list("product_id", "quantity")
+        total = 0
+        if products:
+            for product in products:
+                product_id = product[0]
+                quantity = product[1]
+                price = Product.objects.get(serial_number=product_id).price
+
+                total += quantity * price
+
+            promocode_total = total - round(Decimal(self.promocode.value / 100) * total)
+            return promocode_total
 
     def create_order(self, order_details, stripe_id=None):
         """Convert active cart into an order in the checkout app"""

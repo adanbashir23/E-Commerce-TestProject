@@ -48,7 +48,7 @@ class UserProfile(AbstractUser):
     post_code = models.CharField(max_length=30, null=True)
     avatar = models.ImageField(
         upload_to="images/",
-        default="https://res.cloudinary.com/dxmms7rbf/image/upload/v1660544735/samples/ecommerce/analog-classic.jpg",
+        default="https://res.cloudinary.com/dxmms7rbf/image/upload/v1669368875/media/images/avatar_jbs3k2.jpg",
     )
 
     USERNAME_FIELD = "email"
@@ -61,4 +61,5 @@ class UserProfile(AbstractUser):
         return f"{self.full_name}"
 
     def get_absolute_url(self):
+        """absolute url for profile"""
         return reverse("user_profile")

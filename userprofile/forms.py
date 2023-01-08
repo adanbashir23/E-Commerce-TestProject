@@ -13,8 +13,8 @@ from django.urls import reverse
 class UserProfileCreationForm(UserCreationForm):
     """Signing up form for a user"""
 
-    username = forms.CharField(max_length=30)
-    email = forms.EmailField(max_length=200)
+    # username = forms.CharField(max_length=30)
+    # email = forms.EmailField(max_length=200)
 
     class Meta:
         """_summary_"""
@@ -36,6 +36,8 @@ class UserProfileChangeForm(UserChangeForm):
     """Updating"""
 
     class Meta:
+        """Meta for user profile change"""
+
         model = get_user_model()
         fields = "__all__"
 
@@ -102,7 +104,11 @@ class UserProfileSignupForm(SignupForm):
 
 
 class UserProfileForm(forms.ModelForm):
+    """User profile form"""
+
     class Meta:
+        """Meta for User profile form"""
+
         model = get_user_model()
         fields = [
             "email",
@@ -145,7 +151,7 @@ class UserProfileForm(forms.ModelForm):
 
 
 class UserProfileSigninForm(LoginForm):
-    """Create"""
+    """signin form"""
 
     def __init__(self, *args, **kwargs):
         super(UserProfileSigninForm, self).__init__(*args, **kwargs)

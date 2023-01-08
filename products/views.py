@@ -1,14 +1,23 @@
 """Product views"""
 # pylint: disable=E1101
-from django.contrib.auth.decorators import permission_required
+
+
+import json
+
+# from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
-from django.core.exceptions import PermissionDenied
+
+# from django.core import serializers
+# from django.core.exceptions import PermissionDenied
 from django.db.models import Q
-from django.http import HttpResponseForbidden
-from django.shortcuts import get_object_or_404, redirect
+from django.http import HttpResponse, HttpResponseForbidden
+
+# , JsonResponse
+from django.shortcuts import get_object_or_404, render
 
 # Create models here
 from django.urls import reverse, reverse_lazy
+from django.views import View
 from django.views.generic import (
     CreateView,
     DeleteView,
@@ -16,11 +25,15 @@ from django.views.generic import (
     FormView,
     ListView,
     UpdateView,
-    View,
 )
+
+from products.models import Comment
 
 from .forms import CommentForm
 from .models import Comment, Product
+
+# from django.template import loader
+
 
 # , ProductImage
 
@@ -29,12 +42,12 @@ class ProductListView(ListView):
     """List products from database with pagination"""
 
     model = Product
-    queryset = Product.objects.get_queryset().order_by("product_name")
+    queryset = Product.objects.get_queryset().order_by("serial_number")
     #     rating=Avg('comments__rating')).order_by('id')
     product_count = queryset.count()
     context = {"product_list": queryset, "product_count": product_count}
     template_name = "products/product_list.html"
-    paginate_by = 2
+    paginate_by = 3
 
 
 class ProductDetail(View):
@@ -56,6 +69,7 @@ class ProductDetailView(DetailView):
 
     queryset = Product.objects.all()
     template_name = "products/product_detail.html"
+    # product
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -63,10 +77,12 @@ class ProductDetailView(DetailView):
         # make sure the user is logged in first
         if self.request.user.is_authenticated:
             # check to see if user has already posted review for product
+            # if self.request.user != self.request.product.user:
             user_has_reviewed = Comment.objects.filter(product=self.object).filter(
                 user=self.request.user
             )
-            # if no object was returned then user has not submitted a review
+            # if no object was return
+            # ed then user has not submitted a review
             if not user_has_reviewed:
                 context["display_form"] = True
 
@@ -105,22 +121,22 @@ class ProductCreateView(LoginRequiredMixin, CreateView):
     #     return render(request, "product_detail.html", {"images": images})
 
 
-class ProductDeleteView(PermissionRequiredMixin, DeleteView):
-    # class ProductDeleteView(DeleteView):
+# class ProductDeleteView(PermissionRequiredMixin, DeleteView):
+class ProductDeleteView(DeleteView):
     """Authorized users can delete products"""
 
-    permission_required = "products.delete_product"
+    # permission_required = "products.delete_product"
     model = Product
     context_object_name = "product"
     template_name = "products/product_delete.html"
     success_url = reverse_lazy("product_list")
 
 
-class ProductUpdateView(PermissionRequiredMixin, UpdateView):
-
-    # class ProductUpdateView(UpdateView):
+# class ProductUpdateView(PermissionRequiredMixin, UpdateView):
+class ProductUpdateView(UpdateView):
     """Authorized users can update all product fields"""
-    permission_required = "products.can_edit"
+
+    # permission_required = "products.can_edit"
     # def get_object(request, product.):
     #     product = Product.objects.get(pk=product_id)
     #     if request.user == product.user:
@@ -180,7 +196,7 @@ class ProductSearchResultsView(ListView):
     context_object_name = "search_results"
     # to avoid inconsistent pagination results order by id
     template_name = "products/product_search.html"
-    paginate_by = 2
+    paginate_by = 3
 
     def get(self, request, *args, **kwargs):
         return super().get(request, *args, **kwargs)
@@ -198,7 +214,7 @@ class ProductSearchResultsView(ListView):
                 | Q(product_brand__icontains=keywords)
                 | Q(category__icontains=keywords)
                 | Q(description__icontains=keywords)
-            ).order_by("product_name")
+            ).order_by("serial_number")
         else:
             return ""
 
@@ -208,3 +224,48 @@ class ProductSearchResultsView(ListView):
         # store search term in results to populate template search box
         context["search_keywords"] = self.request.GET.get("keywords")
         return context
+
+
+# class CommentView(View):
+#     form_class = CommentForm
+
+#     def get(self, request, *args, **kwargs):
+#         return render(request, "products/product_detail.html", {})
+
+#     def post(self, request, *args, **kwargs):
+#         if request.is_ajax():
+#             form = self.form_class(request.POST)
+#             if form.is_valid():
+#                 form.save()
+#                 return JsonResponse({"message": "success"})
+#             return JsonResponse({"message": "Field couldn't validate"})
+#         return JsonResponse({"message": "Wrong request"})
+
+
+# class CommentDataView(View):
+#     def get(self, request, *args, **kwargs):
+#         template = loader.get_template("products/product_detail.html")
+#         comments = Comment.objects.all()
+#         context = {"comment_list": comments}
+#         return HttpResponse(template.render(context, self.request))
+
+
+def create_comment(request):
+    if request.method == "POST":
+        comment_text = request.POST.get("the_post")
+        response_data = {}
+
+        post = Comment(comment=comment_text, user=request.user)
+        post.save()
+
+        response_data["result"] = "Create post successful!"
+        response_data["text"] = post.text
+
+        return HttpResponse(json.dumps(response_data), content_type="application/json")
+    else:
+        return HttpResponse(
+            json.dumps({"nothing to see": "this isn't happening"}),
+            content_type="application/json",
+        )
+
+    render(request, "comment.html")

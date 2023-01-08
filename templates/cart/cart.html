@@ -34,7 +34,8 @@
                 <tr>
                     <td>
                         <img src=" {{ form.instance.product.images.url }}" alt="Product image">
-                        {{ form.instance.product.title }}
+                        {#{ form.instance.product.user}#}
+                        <p>{{ form.instance.product.product_name }}</p>
                     </td>
                     <td>
                         {{ form.quantity }}
@@ -71,8 +72,9 @@
                         </div>
                     </td>
                     <td></td>
-
+                    {% if request.cart.promocode != None %}
                     <td>After applying promocode, Total: ${{request.cart.promocode_total}}</td>
+                    {% endif %}
                 </tr>
             </tbody>
         </table>

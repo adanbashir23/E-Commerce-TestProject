@@ -68,8 +68,7 @@ def process_order(request):
                     print(err)
                     messages.error(
                         request,
-                        "There was a problem processing your order,"
-                        " please try again.",
+                        "There was a problem processing your order," " please  again.",
                     )
 
                 return redirect(reverse("checkout"))
@@ -88,7 +87,7 @@ def process_order(request):
         # form field prefixes
         prefix = ("billing_", "shipping_")
         for _prefix in prefix:
-            initial[_prefix + "name"] = user.first_name + " " + user.last_name
+            initial[_prefix + "name"] = user.full_name
             initial[_prefix + "address"] = user.address
             initial[_prefix + "post_code"] = user.post_code
             initial[_prefix + "city"] = user.city
@@ -116,3 +115,11 @@ def process_order(request):
             "checkout/order_processing.html",
             {"shipping_form": shipping_form, "payment_form": payment_form},
         )
+
+
+def checkoutview(request):
+    messages.success(request, "Your transaction is complete!")
+    return render(
+        request,
+        "checkout/checkout_complete.html",
+    )

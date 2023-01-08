@@ -1,13 +1,14 @@
 """Products/urls"""
 from django.urls import path
 
-from .views import (
+from .views import (  # CommentDataView,; CommentView,
     ProductCreateView,
     ProductDeleteView,
     ProductDetail,
     ProductListView,
     ProductSearchResultsView,
     ProductUpdateView,
+    create_comment,
 )
 
 urlpatterns = [
@@ -17,4 +18,6 @@ urlpatterns = [
     path("<uuid:pk>/update/", ProductUpdateView.as_view(), name="product_edit"),
     path("<uuid:pk>/delete/", ProductDeleteView.as_view(), name="product_delete"),
     path("search/", ProductSearchResultsView.as_view(), name="product_search"),
+    path("comment", create_comment, name="comment"),
+    # path("<uuid:pk>/comments-view", CommentDataView.as_view(), name="comment_data"),
 ]

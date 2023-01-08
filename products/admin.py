@@ -1,11 +1,11 @@
-# from django.contrib import admin
-
-# # Register your models here.
-# from .models import Promocode
-
-# admin.site.register(Promocode)
+"""Product admin"""
+from django.contrib import admin
 
 # Register your models here.
+from .models import Promocode
+
+admin.site.register(Promocode)
+
 # from .models import Product, ProductImage
 
 # class ProductImageAdmin(admin.StackedInline):

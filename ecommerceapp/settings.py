@@ -69,7 +69,7 @@ INSTALLED_APPS = [
     "checkout",
     "cart",
     "pages",
-    "promocodes",
+    "jquery",
 ]
 
 MIDDLEWARE = [

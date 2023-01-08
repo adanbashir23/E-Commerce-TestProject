@@ -2,6 +2,7 @@ from crispy_forms.bootstrap import Field, StrictButton
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Div, Fieldset, Layout
 from django import forms
+from django.urls import reverse
 
 from checkout.models import Order
 
@@ -24,27 +25,22 @@ class OrderDetailsForm(forms.ModelForm):
                     Field(
                         "billing_name",
                         wrapper_class="col-12 col-md-6",
-                        readonly="readonly",
                     ),
                     Field(
                         "billing_address",
                         wrapper_class="col-12 col-md-8",
-                        readonly="readonly",
                     ),
                     Field(
                         "billing_post_code",
                         wrapper_class="col-12 col-md-4",
-                        readonly="readonly",
                     ),
                     Field(
                         "billing_city",
                         wrapper_class="col-12 col-md-6",
-                        readonly="readonly",
                     ),
                     Field(
                         "billing_country",
                         wrapper_class="col-12 col-md-6",
-                        readonly="readonly",
                     ),
                     css_class="row",
                 ),
@@ -81,7 +77,7 @@ class PaymentProcessingForm(forms.Form):
         self.helper = FormHelper()
         self.helper.form_id = "payment-form"
         self.helper.form_method = "post"
-        # self.helper.form_action = reverse('checkout_complete')
+        self.helper.form_action = reverse("checkout_complete")
         self.helper.layout = Layout(
             Div(
                 Div(css_id="card-element"),
