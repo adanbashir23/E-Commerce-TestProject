@@ -36,7 +36,6 @@ jobs:
           docker-compose -f docker-compose.ci.yml up -d
           docker-compose -f docker-compose.ci.yml exec web sh -c "python manage.py migrate && python manage.py test"
         # Clean up
-        finally:
-          - docker-compose -f docker-compose.ci.yml down
+        
 
 # Add a docker-compose.ci.yml file to your repository with the necessary changes for CI environment.
