@@ -26,5 +26,6 @@ services:
       DATABASE_USER: postgres
       DATABASE_PASSWORD: postgres
       DATABASE_PORT: 5432
+      SECRET_KEY : "django-insecure-)h20xrma_sa*@s6-)nu9_66evmvb8rr24q99q&f^)j#g%+n&@)"
     depends_on:
       - db
