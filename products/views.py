@@ -26,7 +26,6 @@ from django.views.generic import (
     ListView,
     UpdateView,
 )
-
 from products.models import Comment
 
 from .forms import CommentForm
