@@ -3,7 +3,7 @@ name: Continuous Integration
 on:
   push:
     branches:
-      - devops  # Change this to your default branch if it's different
+      - main
 
 jobs:
   build:
@@ -32,10 +32,8 @@ jobs:
           DATABASE_HOST: db
           DATABASE_PORT: 5432
         run: |
-          docker build -t my-django-app .
-          docker-compose -f docker-compose.ci.yml up -d
-          docker-compose -f docker-compose.ci.yml exec web sh -c "python manage.py migrate && python manage.py test"
+          docker-compose up -d
+          docker-compose exec web sh -c "python manage.py migrate && python manage.py test"
         # Clean up
         
-
-# Add a docker-compose.ci.yml file to your repository with the necessary changes for CI environment.
+        
