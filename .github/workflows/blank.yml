@@ -3,7 +3,7 @@ name: Continuous Integration
 on:
   push:
     branches:
-      - devops
+      - devops  # Change this to your default branch if it's different
 
 jobs:
   build:
@@ -24,17 +24,19 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-     
+      - name: Set up environment variables
+        run: |
+          echo "SECRET_KEY=django-insecure-)h20xrma_sa*@s6-)nu9_66evmvb8rr24q99q&f^)j#g%+n&@)" >> $GITHUB_ENV
+          echo "DATABASE_NAME=ecommerceapp" >> $GITHUB_ENV
+          echo "DATABASE_USER=postgres" >> $GITHUB_ENV
+          echo "DATABASE_PASSWORD=postgres" >> $GITHUB_ENV
+          echo "DATABASE_HOST=db" >> $GITHUB_ENV
+          echo "DATABASE_PORT=5432" >> $GITHUB_ENV
 
       - name: Build and Test
-        env:
-          DATABASE_NAME: ecommerceapp
-          DATABASE_USER: postgres
-          DATABASE_PASSWORD: postgres
-          DATABASE_HOST: db
-          DATABASE_PORT: 5432
-          
         run: |
           docker-compose up -d
           docker-compose exec web sh -c "python manage.py collectstatic --noinput && python manage.py migrate && python manage.py test"
-        
+        # Clean up
+        finally:
+          - docker-compose down
