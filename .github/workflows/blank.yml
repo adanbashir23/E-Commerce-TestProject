@@ -24,6 +24,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Set up environment variables
+        run: |
+         SECRET_KEY="django-insecure-)h20xrma_sa*@s6-)nu9_66evmvb8rr24q99q&f^)j#g%+n&@)"
+        # Add other environment variables as needed
+
       - name: Build and Test
         env:
           DATABASE_NAME: ecommerceapp
@@ -33,7 +38,6 @@ jobs:
           DATABASE_PORT: 5432
         run: |
           docker-compose up -d
-          docker-compose exec web sh -c "python manage.py migrate && python manage.py test"
-        # Clean up
-        
-        
+          docker-compose exec web sh -c "python manage.py collectstatic --noinput && python manage.py migrate && python manage.py test"
+        finally:
+          - docker-compose down
