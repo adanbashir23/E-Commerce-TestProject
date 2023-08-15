@@ -21,3 +21,4 @@ urlpatterns = [
     path("comment", create_comment, name="comment"),
     # path("<uuid:pk>/comments-view", CommentDataView.as_view(), name="comment_data"),
 ]
+                
