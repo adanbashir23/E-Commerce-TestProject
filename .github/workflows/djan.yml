@@ -41,6 +41,7 @@ jobs:
           DATABASE_PASSWORD: ${{ env.DATABASE_PASSWORD }}
           DATABASE_HOST: ${{env.DATABASE_HOST }}
           DATABASE_PORT: 5432
+          SECRET_KEY: ${{env.SECRET_KEY }}
         run: |
           docker-compose build
           docker-compose run --rm web sh -c "python manage.py makemigrations && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
