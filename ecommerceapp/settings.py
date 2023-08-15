@@ -176,11 +176,11 @@ STATIC_ROOT = os.path.join(BASE_DIR, "assets")
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
-CLOUDINARY_STORAGE = {
-    "CLOUD_NAME": env("CLOUD_NAME"),
-    "API_KEY": env("API_KEY"),
-    "API_SECRET": env("API_SECRET"),
-}
+# CLOUDINARY_STORAGE = {
+#     "CLOUD_NAME": env("CLOUD_NAME"),
+#     "API_KEY": env("API_KEY"),
+#     "API_SECRET": env("API_SECRET"),
+# }
 DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
 
 # SITE_ID = 1
