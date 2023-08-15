@@ -1,4 +1,4 @@
-name: Continuous Integration
+name: Build and Run Docker Image
 
 on:
   push:
@@ -6,32 +6,24 @@ on:
       - devops  # Change this to your default branch if it's different
 
 jobs:
-  build_and_test:
+  build_and_run_image:
     runs-on: ubuntu-latest
-
-    services:
-      db:
-        image: postgres
-        ports:
-          - "5432:5432"
-        env:
-          POSTGRES_DB: ecommerceapp
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_HOST_AUTH_METHOD: trust
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Build and Test
-        run: |
-          docker-compose build
-          docker-compose up -d
-          docker-compose exec web sh -c "python manage.py collectstatic --noinput && python manage.py migrate && python manage.py test"
-    
-    # Clean up steps (optional)
-    # ...
+      - name: Build Docker image
+        run: docker build -t your-docker-image:${{ github.sha }} .
 
-# Additional deployment steps if needed
-# ...
+      - name: Set up environment variables
+        run: |
+          echo "SECRET_KEY=django-insecure-)h20xrma_sa*@s6-)nu9_66evmvb8rr24q99q&f^)j#g%+n&@)" >> $GITHUB_ENV
+          echo "DATABASE_NAME=ecommerceapp" >> $GITHUB_ENV
+          echo "DATABASE_USER=postgres" >> $GITHUB_ENV
+          echo "DATABASE_PASSWORD=postgres" >> $GITHUB_ENV
+          echo "DATABASE_HOST=db" >> $GITHUB_ENV
+          echo "DATABASE_PORT=5432" >> $GITHUB_ENV
+
+      - name: Run Docker image
+        run: docker run -d -p 8000:8000 your-docker-image:${{ github.sha }}

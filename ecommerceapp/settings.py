@@ -34,16 +34,16 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/*-
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-)h20xrma_sa*@s6-)nu9_66evmvb8rr24q99q&f^)j#g%+n&@)'
+SECRET_KEY = env("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*'
-    # "0.0.0.0",
-    # "localhost",
-    # "127.0.0.1",
-    # "e-commerce-testproject.herokuapp.com",
+ALLOWED_HOSTS = [
+    "0.0.0.0",
+    "localhost",
+    "127.0.0.1",
+    "e-commerce-testproject.herokuapp.com",
 ]
 
 AUTH_USER_MODEL = "userprofile.UserProfile"
@@ -114,11 +114,11 @@ DATABASES = {
     # }
     "default": {
         "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "NAME": 'ecommerceapp',
-        "USER": 'postgres',
-        "PASSWORD": 'postgres',
-        "HOST": 'localhost',
-        "PORT": 5432,
+        "NAME": env("DATABASE_NAME"),
+        "USER": env("DATABASE_USER"),
+        "PASSWORD": env("DATABASE_PASSWORD"),
+        "HOST": env("DATABASE_HOST"),
+        "PORT": env("DATABASE_PORT"),
     }
 }
 
@@ -176,11 +176,11 @@ STATIC_ROOT = os.path.join(BASE_DIR, "assets")
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
-# CLOUDINARY_STORAGE = {
-#     "CLOUD_NAME": 'dxmms7rbf'',
-#     "API_KEY": env("API_KEY"),
-#     "API_SECRET": env("API_SECRET"),
-# }
+CLOUDINARY_STORAGE = {
+    "CLOUD_NAME": env("CLOUD_NAME"),
+    "API_KEY": env("API_KEY"),
+    "API_SECRET": env("API_SECRET"),
+}
 DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
 
 # SITE_ID = 1
@@ -214,5 +214,5 @@ ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_PRESERVE_USERNAME_CASING = False
 CRISPY_TEMPLATE_PACK = "bootstrap4"
 
-# STRIPE_PUBLISHABLE_KEY = env("STRIPE_PUBLISHABLE_KEY")
-# STRIPE_SECRET_KEY = env("STRIPE_SECRET_KEY")
+STRIPE_PUBLISHABLE_KEY = env("STRIPE_PUBLISHABLE_KEY")
+STRIPE_SECRET_KEY = env("STRIPE_SECRET_KEY")
