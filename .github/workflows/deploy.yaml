@@ -3,7 +3,7 @@ name: Build and Run Docker Image
 on:
   push:
     branches:
-      - devops  # Change this to your default branch if it's different
+      - devops  
 
 jobs:
   build_and_run_image:
@@ -25,7 +25,7 @@ jobs:
       - name: Build Docker image
         run: docker build -t your-docker-image:${{ github.sha }} .
 
-      - name: Set up environment variables
+      - name: Set up environment variables #env variables are used directly because of no access of security
         run: |
           echo "SECRET_KEY=django-insecure-)h20xrma_sa*@s6-)nu9_66evmvb8rr24q99q&f^)j#g%+n&@)" >> $GITHUB_ENV
           echo "DATABASE_NAME=ecommerceapp" >> $GITHUB_ENV
